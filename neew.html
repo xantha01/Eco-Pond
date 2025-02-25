@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="drop.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js'
+    
+        // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js'
+    
+        // Add Firebase products that you want to use
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js'
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js'
+    </script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="leftbar">
+            <div class="profilecont">
+                <div class="profilepic"></div>
+                <div class="icon">
+                    <span class="material-icons">arrow_drop_down</span>
+                </div>
+            </div>
+
+            <div class="sidebaritems">
+                <div class="sidebaritem active">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z"/></svg>
+                </div>
+                <div class="sidebaritem">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z"/></svg>
+                </div>
+                <div class="sidebaritem">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m720-120 160-160-56-56-64 64v-167h-80v167l-64-64-56 56 160 160ZM560 0v-80h320V0H560ZM240-160q-33 0-56.5-23.5T160-240v-560q0-33 23.5-56.5T240-880h280l240 240v121h-80v-81H480v-200H240v560h240v80H240Zm0-80v-560 560Z"/></svg>
+                </div>
+            </div>
+
+            <div class="sidebaritem">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+            </div>
+        </div>
+
+
+        <div class="mainpage">
+            <!-- Main page content -->
+             <div class="topnav">
+                <div class="logo">
+                    <img src="/ecopondlogo.png" alt="">
+                </div>
+                <div id="darkmodeswitch" class="darkmode active">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"/></svg>
+                </div>
+             </div>
+
+             <div class="maincont">
+                <h2>Dashboard</h2>
+                <div class="sensorvaluecont">
+                    <div class="valcont">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M172-488q25-87 101.5-184.5T480-880q130 110 206.5 207.5T788-488h-84q-23-62-79-133.5T480-774q-88 81-144.5 152.5T256-488h-84Zm622 146q-9 49-31.5 92.5T705-171q-35 35-78.5 57T535-84l259-258Zm-163-66h114L421-84q-23-5-44.5-11.5T335-113l296-295Zm-229 0h114L267-159q-15-14-28.5-29T214-220l188-188Zm-243 0h127L176-298q-8-27-12-54.5t-5-55.5Zm321-80Z"/></svg>
+                        </div>
+                        <div class="sensorlabel">Total Dissolved Solid</div>
+                        <div class="sensvalue" id="tdsval">loading...</div>
+                    </div>
+
+                    <div class="valcont">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M172-488q25-87 101.5-184.5T480-880q130 110 206.5 207.5T788-488h-84q-23-62-79-133.5T480-774q-88 81-144.5 152.5T256-488h-84Zm622 146q-9 49-31.5 92.5T705-171q-35 35-78.5 57T535-84l259-258Zm-163-66h114L421-84q-23-5-44.5-11.5T335-113l296-295Zm-229 0h114L267-159q-15-14-28.5-29T214-220l188-188Zm-243 0h127L176-298q-8-27-12-54.5t-5-55.5Zm321-80Z"/></svg>
+                        </div>
+                        <div class="sensorlabel">Temperature</div>
+                        <div class="sensvalue" id="tempval">loading...</div>
+                    </div>
+
+                    <div class="valcont">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M172-488q25-87 101.5-184.5T480-880q130 110 206.5 207.5T788-488h-84q-23-62-79-133.5T480-774q-88 81-144.5 152.5T256-488h-84Zm622 146q-9 49-31.5 92.5T705-171q-35 35-78.5 57T535-84l259-258Zm-163-66h114L421-84q-23-5-44.5-11.5T335-113l296-295Zm-229 0h114L267-159q-15-14-28.5-29T214-220l188-188Zm-243 0h127L176-298q-8-27-12-54.5t-5-55.5Zm321-80Z"/></svg>
+                        </div>
+                        <div class="label">Turbidity</div>
+                        <div class="sensvalue" id="turbidityval">loading...</div>
+                    </div>
+
+                    <div class="valcont">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M172-488q25-87 101.5-184.5T480-880q130 110 206.5 207.5T788-488h-84q-23-62-79-133.5T480-774q-88 81-144.5 152.5T256-488h-84Zm622 146q-9 49-31.5 92.5T705-171q-35 35-78.5 57T535-84l259-258Zm-163-66h114L421-84q-23-5-44.5-11.5T335-113l296-295Zm-229 0h114L267-159q-15-14-28.5-29T214-220l188-188Zm-243 0h127L176-298q-8-27-12-54.5t-5-55.5Zm321-80Z"/></svg>
+                        </div>
+                        <div class="label">Ammonia level</div>
+                        <div class="sensvalue" id="ammoniaval">loading...</div>
+                    </div>
+                </div>
+
+                <h2>Control</h2>
+                <div class="controls">
+
+                    <div class="dropdown-container">
+                        <label for="feed-time">Refill</label>
+                        <select id="feed-time" class="dropdown">
+                            <option value="5000">5 secs</option>
+                            <option value="10000">10 secs</option>
+                            <option value="30000">30 secs</option>
+                        </select>
+                        <button id="start-feed">Start Refill</button>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <label for="drain-time">Drain</label>
+                        <select id="drain-time" class="dropdown">
+                            <option value="20">20%</option>
+                            <option value="50">50%</option>
+                            <option value="100">100%</option>
+                        </select>
+                        <button id="start-drain">Start Draining</button>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <label for="Refill">Feeding</label>
+                        <select id="Refill" class="dropdown">
+                            <option value="10">10%</option>
+                            <option value="50">50%</option>
+                            <option value="100">100%</option>
+                        </select>
+                        <button id="start-Refill">Start Feeding</button>
+                    </div>
+
+
+                    <!-- <div class="control">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M160-400q-33 0-56.5-23.5T80-480q0-33 23.5-56.5T160-560q33 0 56.5 23.5T240-480q0 33-23.5 56.5T160-400Zm66 228-56-56 174-174 56 56-174 174Zm120-388L172-734l56-56 174 174-56 56ZM480-80q-33 0-56.5-23.5T400-160q0-33 23.5-56.5T480-240q33 0 56.5 23.5T560-160q0 33-23.5 56.5T480-80Zm0-640q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720Zm134 162-56-58 176-174 56 56-176 176Zm120 386L560-346l56-56 174 174-56 56Zm66-228q-33 0-56.5-23.5T720-480q0-33 23.5-56.5T800-560q33 0 56.5 23.5T880-480q0 33-23.5 56.5T800-400Z"/></svg>
+                        </div>
+                        <div class="label">Feed</div>
+                    </div> -->
+    
+                    <!-- <div class="control">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M440-640v-120H280v-80h400v80H520v120h-80ZM160-120v-320h80v40h120v-120h-40v-80h320v80h-40v120h120v-40h80v320h-80v-40H240v40h-80Zm80-120h480v-80H520v-200h-80v200H240v80Zm240 0Z"/></svg>
+                        </div>
+                        <div class="label">Drain</div>
+                    </div> -->
+    
+                    <!-- <div class="control">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M120-280h164q-17-17-31.5-37T227-360H120v80Zm360 0q83 0 141.5-58.5T680-480q0-83-58.5-141.5T480-680q-83 0-141.5 58.5T280-480q0 83 58.5 141.5T480-280Zm253-320h107v-80H676q17 17 31.5 37t25.5 43ZM40-160v-320h80v40h83q-2-10-2.5-19.5T200-480q0-117 81.5-198.5T480-760h360v-40h80v320h-80v-40h-83q2 10 2.5 19.5t.5 20.5q0 117-81.5 198.5T480-200H120v40H40Zm80-120v-80 80Zm720-320v-80 80ZM480-480Zm0 120q-33 0-56.5-23.5T400-440q0-23 9.5-45.5T446-550l34-50 34 50q27 42 36.5 64.5T560-440q0 33-23.5 56.5T480-360Z"/></svg>
+                        </div>
+                        <div class="label">Refill</div>
+                    </div> -->
+                </div>
+
+                <h2>Analytics</h2>
+
+                <div class="chartcont">
+                    <div id="chart" class="chart"></div>
+                    <div class="options">
+                        <div class="option" id="export-png">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-480ZM202-65l-56-57 118-118h-90v-80h226v226h-80v-89L202-65Zm278-15v-80h240v-440H520v-200H240v400h-80v-400q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H480Z"/></svg>
+                            </div>
+                            <div class="label">Export PNG</div>
+                        </div>
+
+                        <div class="option" id="export-svg">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-480ZM202-65l-56-57 118-118h-90v-80h226v226h-80v-89L202-65Zm278-15v-80h240v-440H520v-200H240v400h-80v-400q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H480Z"/></svg>
+                            </div>
+                            <div class="label">Export SVG</div>
+                        </div>
+
+                        <div class="option" id="export-csv">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-480ZM202-65l-56-57 118-118h-90v-80h226v226h-80v-89L202-65Zm278-15v-80h240v-440H520v-200H240v400h-80v-400q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H480Z"/></svg>
+                            </div>
+                            <div class="label">Export CSV</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h2>Control</h2>
+             </div>
+        </div>
+
+
+        <div class="rightbar">
+            <!-- Right bar content -->
+             <h2>Status and control</h2>
+             <div class="systemstatcont">
+                <div class="miniheader">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M197-197q-54-55-85.5-127.5T80-480q0-84 31.5-156.5T197-763l57 57q-44 44-69 102t-25 124q0 67 25 125t69 101l-57 57Zm113-113q-32-33-51-76.5T240-480q0-51 19-94.5t51-75.5l57 57q-22 22-34.5 51T320-480q0 33 12.5 62t34.5 51l-57 57Zm170-90q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm170 90-57-57q22-22 34.5-51t12.5-62q0-33-12.5-62T593-593l57-57q32 32 51 75.5t19 94.5q0 50-19 93.5T650-310Zm113 113-57-57q44-44 69-102t25-124q0-67-25-125t-69-101l57-57q54 54 85.5 126.5T880-480q0 83-31.5 155.5T763-197Z"/></svg>
+                    <h3>System status</h3>
+                </div>
+                <div class="systemstat">
+                    <div class="label">Sensors</div>
+                    <div class="value"> 
+                        <input type="checkbox" id="checkbox" />
+                        <label for="checkbox" class="switch">
+                        Start
+                        <svg
+                        class="slider"
+                        viewBox="0 0 512 512"
+                        height="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                        >
+                        <path
+                            d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C49.7 115.4 16 181.8 16 256c0 132.5 107.5 240 240 240s240-107.5 240-240c0-74.2-33.8-140.6-86.6-184.6c-13.6-11.3-33.8-9.4-45.1 4.1s-9.4 33.8 4.1 45.1c38.9 32.3 63.5 81 63.5 135.4c0 97.2-78.8 176-176 176s-176-78.8-176-176c0-54.4 24.7-103.1 63.5-135.4z"
+                        ></path>
+                        </svg>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="systemstat">
+                    <div class="label">Connectivity</div>
+                    <div class="value disconnected" id="connectivityval">Connected</div>
+                </div>
+
+                <div class="systemstat">
+                    <div class="label">Runtime</div>
+                    <div class="value" id="runtimeval">08 : 48 : 59</div>
+                </div>
+             </div>
+
+             <input type="date" name="calendar" id="calendar" class="calendar">
+
+            <div class="systemstatcont">
+                <div class="miniheader">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.975 22C6.45833 22 6.0125 21.8292 5.6375 21.4875C5.2625 21.1458 5.05 20.725 5 20.225L3 2H21L19 20.225C18.95 20.725 18.7375 21.1458 18.3625 21.4875C17.9875 21.8292 17.5417 22 17.025 22H6.975ZM5.9 10L7 20H17L18.1 10H5.9ZM5.65 8H18.35L18.75 4H5.25L5.65 8ZM12 17C11.7667 17 11.5667 16.9167 11.4 16.75C11.2333 16.5833 11.15 16.3833 11.15 16.15C11.15 15.9 11.2208 15.6125 11.3625 15.2875C11.5042 14.9625 11.7167 14.5917 12 14.175C12.2833 14.5917 12.4958 14.9625 12.6375 15.2875C12.7792 15.6125 12.85 15.9 12.85 16.15C12.85 16.3833 12.7667 16.5833 12.6 16.75C12.4333 16.9167 12.2333 17 12 17ZM12 19C12.8 19 13.475 18.725 14.025 18.175C14.575 17.625 14.85 16.95 14.85 16.15C14.85 15.4667 14.6292 14.725 14.1875 13.925C13.7458 13.125 13.0167 12.15 12 11C10.9833 12.15 10.2542 13.125 9.8125 13.925C9.37083 14.725 9.15 15.4667 9.15 16.15C9.15 16.95 9.425 17.625 9.975 18.175C10.525 18.725 11.2 19 12 19Z" fill="#8089A4"/>
+                    </svg>                        
+                    <h3>Refill tank</h3>
+                </div>
+                <div class="tank">
+                    <div class="tankvalue" id="tankval">76%</div>
+                    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+                        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+                    </svg>
+                    <div class="water" id="water"></div>
+                </div>
+                    <div class="onoffbutton active" id="pumpbtn">
+                        <div class="butonlabel">Start pump</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M120-280h164q-17-17-31.5-37T227-360H120v80Zm360 0q83 0 141.5-58.5T680-480q0-83-58.5-141.5T480-680q-83 0-141.5 58.5T280-480q0 83 58.5 141.5T480-280Zm253-320h107v-80H676q17 17 31.5 37t25.5 43ZM40-160v-320h80v40h83q-2-10-2.5-19.5T200-480q0-117 81.5-198.5T480-760h360v-40h80v320h-80v-40h-83q2 10 2.5 19.5t.5 20.5q0 117-81.5 198.5T480-200H120v40H40Zm80-120v-80 80Zm720-320v-80 80ZM480-480Zm0 120q-33 0-56.5-23.5T400-440q0-23 9.5-45.5T446-550l34-50 34 50q27 42 36.5 64.5T560-440q0 33-23.5 56.5T480-360Z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
+
+    <script src="script.js"></script>
+    <script src="chrt.js"></script>
+    <script type="module" src="livevaluesnew.js"></script>
+    <script type="module" src="writevalues.js"></script>
+
+
+    
+</body>
+</html>

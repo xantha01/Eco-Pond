@@ -1,0 +1,68 @@
+:root {
+    --bright-blue: #255CFF;
+    --bright-bluehalf: rgba(37, 92, 255, 0.438);
+    --black: #474747;
+    --grey: #8089A4;
+    --light-blue: #F7F8FE;
+    --white: #FFFFFF;
+    --green-shine: #3bff7d;
+    --waterblue: rgba(0, 123, 255, 0.7);
+    --water-gradient: linear-gradient(to bottom, rgba(0, 123, 255, 1), rgba(135, 206, 235, 0.3));
+}
+
+body {
+    background-color: var(--light-blue);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.dropdown-container {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+label {
+    font-size: 16px;
+    color: var(--black);
+    font-weight: bold;
+}
+
+.dropdown {
+    width: 150px;
+    padding: 8px;
+    margin: 10px 0;
+    border: 2px solid var(--grey);
+    border-radius: 5px;
+    background: var(--white);
+    font-size: 14px;
+    color: var(--black);
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+button {
+    background: var(--bright-blue);
+    color: var(--white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: var(--waterblue);
+}
+
+/* Active state styling */
+.active {
+    border-color: var(--green-shine) !important;
+    background: var(--bright-bluehalf) !important;
+    color: var(--white);
+}

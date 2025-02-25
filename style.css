@@ -202,8 +202,8 @@ svg, svg path {
     border-radius: 1rem;
     background-color: var(--bright-blue);
     max-width: 15rem;
-    min-width: 10rem; 
-    width: 25%;
+    /* min-width: 8rem;  */
+    width: 22%;
 
     color: var(--white);
 }
@@ -241,7 +241,7 @@ svg, svg path {
     display: flex;
     padding: 1rem;
     width: 100%;
-    outline: 1px red solid;
+    /* outline: 1px red solid; */
 }
 
 .options{
@@ -270,6 +270,34 @@ svg, svg path {
     fill: var(--white);
     color: var(--white);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.control{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--light-blue);
+    padding: 1rem;
+    border-radius: 1rem;
+    fill: var(--grey);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid var(--bright-blue);
+}
+
+.control:hover {
+    background-color: var(--bright-blue);
+    fill: var(--white);
+    color: var(--white);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.controls{
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
 }
 
 

@@ -1,72 +1,37 @@
-// Replace with your actual Blynk Auth Token
-const AUTH_TOKEN = "F8s703xd70V55z_Pnb1bgCL4n29n48dX";
+// Import Firebase modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 
-// Blynk API URLs
-const BLYNK_STATUS_URL = `https://ny3.blynk.cloud/external/api/isHardwareConnected?token=${AUTH_TOKEN}`;
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDvoNTfgTCUj1k729S9SJerlOMWILV3dFs",
+  authDomain: "ecopond-86c76.firebaseapp.com",
+  databaseURL: "https://ecopond-86c76-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "ecopond-86c76",
+  storageBucket: "ecopond-86c76.firebasestorage.app",
+  messagingSenderId: "246216522666",
+  appId: "1:246216522666:web:0825096c9d5f68f8e8c9d3",
+  measurementId: "G-BNCT04K830"
+};
 
-// Fetch data from a virtual pin
-async function fetchBlynkData(pin) {
-  try {
-    const response = await fetch(`https://ny3.blynk.cloud/external/api/get?token=${AUTH_TOKEN}&V${pin}`);
-    if (!response.ok) {
-      throw new Error(`Error fetching data for V${pin}: ${response.statusText}`);
-    }
-    const data = await response.text(); // API returns value as plain text
-    return data;
-  } catch (error) {
-    console.error(error);
-    return "Offline";  // Return "Offline" if there is an error
-  }
-}
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
-// Check hardware connection status
-async function fetchConnectionStatus() {
-  try {
-    const response = await fetch(BLYNK_STATUS_URL);
-    if (!response.ok) {
-      throw new Error(`Error checking connection status: ${response.statusText}`);
-    }
-    const isConnected = await response.json();
-    return isConnected; // API returns true/false
-  } catch (error) {
-    console.error(error);
-    return false; // Default to false if error occurs
-  }
-}
+// Reference to the database path
+const dbRef = ref(database, "sensorData");
 
-// Update the dashboard with real-time data
-async function updateDashboard() {
-  const connectionStatus = await fetchConnectionStatus();
-  const statusElement = document.getElementById("connectivityval");
-
-  if (connectionStatus) {
-    statusElement.textContent = "Connected";
-    statusElement.classList.remove("disconnected");
-    statusElement.classList.add("connected");
-
-    // Fetch data from pins when connected
-    const turbidity = await fetchBlynkData("0"); // For V0
-    const temperature = await fetchBlynkData("1"); // For V1
-    const tds = await fetchBlynkData("2"); // For V2
-
-    // Update HTML content for sensor data
-    document.getElementById("turbidityval").textContent = turbidity;
-    document.getElementById("tempval").textContent = temperature;
-    document.getElementById("tdsval").textContent = tds;
+// Fetch and display real-time data
+onValue(dbRef, (snapshot) => {
+  if (snapshot.exists()) {
+    const data = snapshot.val();
+    document.getElementById("airQuality").innerText = data.airQuality;
+    document.getElementById("tds").innerText = data.tds;
+    document.getElementById("temperature").innerText = data.temperature;
+    document.getElementById("turbidity").innerText = data.turbidity;
   } else {
-    statusElement.textContent = "Disconnected";
-    statusElement.classList.remove("connected");
-    statusElement.classList.add("disconnected");
-
-    // Show "Offline" if disconnected
-    document.getElementById("turbidityval").textContent = "Offline";
-    document.getElementById("tempval").textContent = "Offline";
-    document.getElementById("tdsval").textContent = "Offline";
+    console.log("No data available");
   }
-}
-
-// Refresh data every 5 seconds
-setInterval(updateDashboard, 1000);
-
-// Initial load
-updateDashboard();
+}, (error) => {
+  console.error("Error fetching data:", error);
+});
